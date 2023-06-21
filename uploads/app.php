@@ -1,5 +1,21 @@
 <?php
-    function autoload($class){
+    trait getInstance{
+        static $getinstance;
+        static function getInstance(){
+            $arg = (array) func_get_args()[0];
+            if (!self::$getinstance instanceof self){
+                try {
+                    self::$getinstance = new self(...$arg);
+                    return self::$getinstance;
+                } catch (\Throwable $e) {
+                    return $e ->getMenssage();
+                }
+
+            }
+            return self::$getinstance;
+        }
+    }
+    function autoload(){
         $carpeta = (array) [
             dirname(__DIR__)."/scripts/clients",
             dirname(__DIR__)."/scripts/compra"
@@ -19,7 +35,6 @@
 
     print_r(\app\details\detalle::getInstance([
         "nombre" => "Diego", 
-        "edad" => 23, 
-        "validacion" => true
+        "edad" => 23
     ]));
 ?>
